@@ -180,10 +180,10 @@
       justify-content: center;
     }
 
-    .hero-logo-wrap svg {
+    .hero-logo-wrap img {
       width: 280px;
       height: 280px;
-      opacity: 0.92;
+      opacity: 0.97;
       filter: drop-shadow(0 0 60px rgba(201,160,80,0.12));
     }
 
@@ -247,8 +247,8 @@
     }
 
     /* ── Estado inicial: tudo invisível antes de animar ── */
-    .hero-logo-wrap svg     { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
-    .hero-logo-wrap svg.glowing { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both,
+    .hero-logo-wrap img     { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+    .hero-logo-wrap img.glowing { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both,
                                              logo-glow 2.5s ease-in-out 1.2s infinite; }
 
     .hero-tag               { animation: tag-in  0.4s cubic-bezier(0.22,1,0.36,1) 0.3s  both; }
@@ -876,7 +876,7 @@
         order: -1;
       }
 
-      .hero-logo-wrap svg { width: 180px; height: 180px; }
+      .hero-logo-wrap img { width: 180px; height: 180px; }
 
       #hero { padding: 80px 24px 60px; }
 
@@ -947,27 +947,7 @@
       <p class="hero-note">Não é aberto. Toda vaga tem uma conversa antes.</p>
     </div>
     <div class="hero-logo-wrap">
-      <svg class="glowing" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <path id="topArcF" d="M 28,100 a 72,72 0 1,1 144,0"/>
-          <path id="botArcF" d="M 40,120 a 72,72 0 0,0 120,0"/>
-        </defs>
-        <circle cx="100" cy="100" r="97" fill="#000000"/>
-        <circle cx="100" cy="100" r="97" fill="none" stroke="#C9A050" stroke-width="2.5"/>
-        <circle cx="100" cy="100" r="89" fill="none" stroke="#C9A050" stroke-width="0.7" stroke-dasharray="2.5,3"/>
-        <text font-family="Georgia,serif" font-size="12.5" font-weight="bold" fill="#C9A050" letter-spacing="3.5"><textPath href="#topArcF" startOffset="10%">OS CONSELHEIROS</textPath></text>
-        <line x1="34" y1="102" x2="48" y2="102" stroke="#C9A050" stroke-width="1.2"/>
-        <line x1="152" y1="102" x2="166" y2="102" stroke="#C9A050" stroke-width="1.2"/>
-        <g transform="translate(100,94)" fill="none" stroke="#C9A050" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="-20" y="-2" width="40" height="10" rx="2" fill="rgba(201,160,80,0.12)" stroke-width="1.6"/>
-          <rect x="-15" y="-24" width="30" height="20" rx="2" fill="rgba(201,160,80,0.08)" stroke-width="1.6"/>
-          <line x1="-16" y1="8" x2="-18" y2="24" stroke-width="1.6"/>
-          <line x1="16" y1="8" x2="18" y2="24" stroke-width="1.6"/>
-          <path d="M -5,0 Q -3,-9 0,-5 Q 3,-11 5,0" fill="rgba(212,96,10,0.3)" stroke-width="1.2"/>
-        </g>
-        <text font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#C9A050" letter-spacing="5"><textPath href="#botArcF" startOffset="22%">HOT SEAT</textPath></text>
-        <circle cx="100" cy="172" r="2.5" fill="#C9A050"/>
-      </svg>
+      <img src="logo.png" class="glowing" alt="Os Conselheiros — Hot Seat">
     </div>
   </div>
 </section>
