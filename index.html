@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Os Conselheiros — Hot Seat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000000;
+      --black-alt: #0D0D0D;
+      --white: #FFFFFF;
+      --gray: #666666;
+      --amber: #D4600A;
+      --gold: #C9A050;
+      --line: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    h1, h2, h3, .display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    section { position: relative; overflow: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .nav-cta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+      border: 1.5px solid var(--amber);
+      padding: 10px 22px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-cta:hover { background: var(--amber); color: var(--white); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 40px 80px;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text { }
+
+    .hero-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1.5px;
+      background: var(--amber);
+    }
+
+    .hero-headline {
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 36px;
+    }
+
+    .hero-headline .em {
+      color: var(--amber);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .hero-sub strong { color: var(--white); font-weight: 500; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 18px 40px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    .hero-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--gray);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-logo-wrap svg {
+      width: 280px;
+      height: 280px;
+      opacity: 0.92;
+      filter: drop-shadow(0 0 60px rgba(201,160,80,0.12));
+    }
+
+    /* ══════════════════════════════════════
+       ANIMAÇÕES DE ENTRADA — HERO
+    ══════════════════════════════════════ */
+
+    /* Scan flash — linha branca que varre a tela uma vez */
+    @keyframes scan-sweep {
+      0%   { transform: translateX(-100%); opacity: 0; }
+      10%  { opacity: 0.06; }
+      100% { transform: translateX(100vw); opacity: 0; }
+    }
+
+    /* Logo: slam com bounce */
+    @keyframes logo-slam {
+      0%   { transform: scale(0.25) rotate(-28deg) translateY(-60px); opacity: 0;
+             filter: drop-shadow(0 0 0px rgba(201,160,80,0)); }
+      55%  { transform: scale(1.12) rotate(4deg) translateY(0);  opacity: 1; }
+      72%  { transform: scale(0.94) rotate(-2deg); }
+      86%  { transform: scale(1.04) rotate(1deg); }
+      100% { transform: scale(1)    rotate(0deg); opacity: 1;
+             filter: drop-shadow(0 0 60px rgba(201,160,80,0.28)); }
+    }
+
+    /* Glow pulse no logo após entrada */
+    @keyframes logo-glow {
+      0%,100% { filter: drop-shadow(0 0 30px rgba(201,160,80,0.15)); }
+      50%     { filter: drop-shadow(0 0 80px rgba(201,160,80,0.45)); }
+    }
+
+    /* Tag/eyebrow: desliza da esquerda */
+    @keyframes tag-in {
+      0%   { transform: translateX(-50px); opacity: 0; }
+      100% { transform: translateX(0);     opacity: 1; }
+    }
+
+    /* Cada linha da headline: wipe da esquerda (clip-path) */
+    @keyframes line-wipe {
+      0%   { clip-path: inset(0 100% 0 0); transform: translateX(-16px); }
+      100% { clip-path: inset(0 0%   0 0); transform: translateX(0); }
+    }
+
+    /* Glow flash na linha âmbar */
+    @keyframes amber-flash {
+      0%,100% { text-shadow: none; }
+      40%     { text-shadow: 0 0 40px rgba(212,96,10,0.9), 0 0 80px rgba(212,96,10,0.4); }
+    }
+
+    /* Sub text: fade + sobe */
+    @keyframes fade-up {
+      0%   { transform: translateY(24px); opacity: 0; }
+      100% { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* CTA: pop com escala */
+    @keyframes cta-pop {
+      0%   { transform: scale(0.82); opacity: 0; }
+      65%  { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    /* ── Estado inicial: tudo invisível antes de animar ── */
+    .hero-logo-wrap svg     { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+    .hero-logo-wrap svg.glowing { animation: logo-slam 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both,
+                                             logo-glow 2.5s ease-in-out 1.2s infinite; }
+
+    .hero-tag               { animation: tag-in  0.4s cubic-bezier(0.22,1,0.36,1) 0.3s  both; }
+
+    .line-wrap              { display: block; overflow: hidden; }
+    .line-inner             { display: block;
+                              animation: line-wipe 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+    .line-inner.l1          { animation-delay: 0.52s; }
+    .line-inner.l2          { animation-delay: 0.68s; }
+    .line-inner.l3          { animation-delay: 0.84s; }
+    .line-inner.l4          { animation-delay: 1.00s; }
+
+    .em.line-inner          { animation: line-wipe 0.45s cubic-bezier(0.22,1,0.36,1) 0.84s both,
+                                          amber-flash 0.6s ease-out 1.28s both; }
+
+    .hero-sub               { animation: fade-up 0.55s cubic-bezier(0.22,1,0.36,1) 1.2s both; }
+    .btn-primary            { animation: cta-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) 1.52s both; }
+    .hero-note              { animation: fade-up 0.4s ease-out 1.75s both; }
+
+    /* Scan sweep — pseudo-element no hero */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      animation: scan-sweep 0.9s cubic-bezier(0.4,0,0.6,1) 0s both;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* ── ELEFANTE ── */
+    #elefante {
+      background: var(--black-alt);
+      padding: 100px 40px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .elefante-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-left: 4px solid var(--amber);
+      padding-left: 48px;
+    }
+
+    .elefante-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 28px;
+    }
+
+    .elefante-title {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+      max-width: 800px;
+    }
+
+    .elefante-body {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 680px;
+      line-height: 1.75;
+    }
+
+    .elefante-body strong { color: var(--white); }
+
+    /* ── O QUE É ── */
+    #oque {
+      padding: 120px 40px;
+    }
+
+    .section-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(120px, 18vw, 240px);
+      font-weight: 800;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      position: absolute;
+      top: 40px;
+      right: -20px;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+
+    .oque-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .oque-headline {
+      font-size: clamp(52px, 7vw, 100px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .oque-headline .italic-amber {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .oque-body {
+      max-width: 660px;
+      margin-top: 48px;
+    }
+
+    .oque-body p {
+      font-size: 18px;
+      color: var(--gray);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .oque-body p strong { color: var(--white); }
+
+    /* ── STATS ── */
+    #stats {
+      background: var(--black-alt);
+      padding: 100px 40px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 40px 48px;
+      border-right: 1px solid var(--line);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-dash {
+      width: 36px;
+      height: 3px;
+      background: var(--amber);
+      margin-bottom: 28px;
+    }
+
+    .stat-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .stat-title em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .stat-desc {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* ── STEPS ── */
+    #steps {
+      padding: 120px 40px;
+    }
+
+    .steps-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1.5px;
+      background: var(--amber);
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 32px;
+      padding: 48px 0;
+      border-top: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .step:last-child { border-bottom: 1px solid var(--line); }
+
+    .step-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(64px, 7vw, 96px);
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .step-content h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .step-content p {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    /* ── PARA QUEM ── */
+    #paraquem {
+      background: var(--black-alt);
+      padding: 120px 40px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .paraquem-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 80px;
+    }
+
+    .paraquem-left h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .paraquem-left p {
+      margin-top: 20px;
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    .paraquem-list {
+      list-style: none;
+    }
+
+    .paraquem-list li {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 17px;
+      color: var(--white);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      line-height: 1.5;
+    }
+
+    .paraquem-list li::before {
+      content: '→';
+      color: var(--amber);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── NÃO É PRA VOCÊ ── */
+    #naopra {
+      padding: 120px 40px;
+    }
+
+    .naopra-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .naopra-headline {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 64px;
+    }
+
+    .naopra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .naopra-item {
+      padding: 32px 40px;
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+
+    .naopra-grid .naopra-item:nth-child(2n) { border-right: none; }
+
+    .naopra-item p {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    .naopra-item p strong { color: var(--white); }
+
+    /* ── PREÇOS ── */
+    #precos {
+      background: var(--black-alt);
+      padding: 120px 40px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .precos-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .precos-header {
+      margin-bottom: 64px;
+    }
+
+    .precos-header h2 {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .precos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .preco-card {
+      background: var(--black);
+      padding: 48px 40px;
+      position: relative;
+    }
+
+    .preco-card.featured {
+      background: #0A0A0A;
+    }
+
+    .preco-badge {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+
+    .preco-badge-neutral {
+      display: inline-block;
+      border: 1px solid var(--line);
+      color: var(--gray);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+
+    .preco-lote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .preco-valor {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(48px, 5vw, 72px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .preco-card.featured .preco-valor { color: var(--amber); }
+
+    .preco-de {
+      font-size: 14px;
+      color: var(--gray);
+      text-decoration: line-through;
+      margin-bottom: 32px;
+    }
+
+    .preco-features {
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .preco-features li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .preco-features li strong { color: var(--white); font-weight: 500; }
+
+    .btn-card-primary {
+      display: block;
+      background: var(--amber);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      padding: 16px 24px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-card-primary:hover { opacity: 0.85; }
+
+    .btn-card-secondary {
+      display: block;
+      background: transparent;
+      color: var(--gray);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      padding: 16px 24px;
+      border: 1px solid var(--line);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-card-secondary:hover { border-color: var(--white); color: var(--white); }
+
+    .preco-esgotado {
+      display: block;
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── COUNTDOWN ── */
+    #countdown {
+      padding: 120px 40px;
+      text-align: center;
+    }
+
+    .countdown-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 48px;
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 48px;
+    }
+
+    .countdown-block {
+      padding: 20px 48px;
+      border-right: 1px solid var(--line);
+    }
+
+    .countdown-block:last-child { border-right: none; }
+
+    .countdown-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(72px, 12vw, 160px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      display: block;
+    }
+
+    .countdown-unit {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 8px;
+    }
+
+    .countdown-note {
+      font-size: 15px;
+      color: var(--gray);
+    }
+
+    /* ── CTA FINAL ── */
+    #cta-final {
+      background: var(--amber);
+      padding: 120px 40px;
+    }
+
+    .cta-final-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .cta-final-text h2 {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-final-text p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.65;
+      max-width: 520px;
+    }
+
+    .btn-final {
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 22px 44px;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-final:hover { opacity: 0.85; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 48px 40px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .container { padding: 0 24px; }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero-logo-wrap {
+        order: -1;
+      }
+
+      .hero-logo-wrap svg { width: 180px; height: 180px; }
+
+      #hero { padding: 80px 24px 60px; }
+
+      #elefante { padding: 72px 24px; }
+      .elefante-inner { padding-left: 28px; }
+
+      #oque { padding: 80px 24px; }
+      .section-number { font-size: 100px; right: -10px; }
+
+      #stats { padding: 60px 24px; }
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--line); padding: 32px 0; }
+      .stat-item:last-child { border-bottom: none; }
+
+      #steps { padding: 80px 24px; }
+      .step { grid-template-columns: 80px 1fr; gap: 20px; }
+
+      #paraquem { padding: 80px 24px; }
+      .paraquem-inner { grid-template-columns: 1fr; gap: 48px; }
+
+      #naopra { padding: 80px 24px; }
+      .naopra-grid { grid-template-columns: 1fr; }
+      .naopra-item { border-right: none; }
+
+      #precos { padding: 80px 24px; }
+      .precos-grid { grid-template-columns: 1fr; }
+
+      #countdown { padding: 80px 24px; }
+      .countdown-grid { gap: 0; flex-wrap: wrap; }
+      .countdown-block { padding: 16px 24px; }
+
+      #cta-final { padding: 80px 24px; }
+      .cta-final-inner { grid-template-columns: 1fr; gap: 40px; }
+
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-headline { font-size: 44px; }
+      .countdown-num { font-size: 64px; }
+      .countdown-block { padding: 12px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo">Os Conselheiros · Hot Seat</span>
+  <a href="#precos" class="nav-cta">Garantir vaga</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">ENCONTRO MENSAL · 4ª EDIÇÃO · 08 DE JULHO</div>
+      <h1 class="hero-headline">
+        <span class="line-wrap"><span class="line-inner l1">A última vez</span></span>
+        <span class="line-wrap"><span class="line-inner l2">que alguém te disse</span></span>
+        <span class="line-wrap"><em class="em line-inner l3">a verdade</em></span>
+        <span class="line-wrap"><span class="line-inner l4">foi quando?</span></span>
+      </h1>
+      <p class="hero-sub">
+        O Hot Seat mensal onde <strong>24 empresários param de fingir que tá tudo certo</strong> e trabalham problemas reais com quem já esteve no mesmo lugar.
+      </p>
+      <a href="#precos" class="btn-primary">QUERO UMA VAGA →</a>
+      <p class="hero-note">Não é aberto. Toda vaga tem uma conversa antes.</p>
+    </div>
+    <div class="hero-logo-wrap">
+      <svg class="glowing" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <path id="topArcF" d="M 28,100 a 72,72 0 1,1 144,0"/>
+          <path id="botArcF" d="M 40,120 a 72,72 0 0,0 120,0"/>
+        </defs>
+        <circle cx="100" cy="100" r="97" fill="#000000"/>
+        <circle cx="100" cy="100" r="97" fill="none" stroke="#C9A050" stroke-width="2.5"/>
+        <circle cx="100" cy="100" r="89" fill="none" stroke="#C9A050" stroke-width="0.7" stroke-dasharray="2.5,3"/>
+        <text font-family="Georgia,serif" font-size="12.5" font-weight="bold" fill="#C9A050" letter-spacing="3.5"><textPath href="#topArcF" startOffset="10%">OS CONSELHEIROS</textPath></text>
+        <line x1="34" y1="102" x2="48" y2="102" stroke="#C9A050" stroke-width="1.2"/>
+        <line x1="152" y1="102" x2="166" y2="102" stroke="#C9A050" stroke-width="1.2"/>
+        <g transform="translate(100,94)" fill="none" stroke="#C9A050" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="-20" y="-2" width="40" height="10" rx="2" fill="rgba(201,160,80,0.12)" stroke-width="1.6"/>
+          <rect x="-15" y="-24" width="30" height="20" rx="2" fill="rgba(201,160,80,0.08)" stroke-width="1.6"/>
+          <line x1="-16" y1="8" x2="-18" y2="24" stroke-width="1.6"/>
+          <line x1="16" y1="8" x2="18" y2="24" stroke-width="1.6"/>
+          <path d="M -5,0 Q -3,-9 0,-5 Q 3,-11 5,0" fill="rgba(212,96,10,0.3)" stroke-width="1.2"/>
+        </g>
+        <text font-family="Georgia,serif" font-size="11" font-weight="bold" fill="#C9A050" letter-spacing="5"><textPath href="#botArcF" startOffset="22%">HOT SEAT</textPath></text>
+        <circle cx="100" cy="172" r="2.5" fill="#C9A050"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ── ELEFANTE NA SALA ── -->
+<section id="elefante">
+  <div class="elefante-inner">
+    <div class="elefante-label">O elefante na sala</div>
+    <h2 class="elefante-title">
+      Conselho de qualidade é o recurso mais escasso no ambiente empreendedor brasileiro.
+    </h2>
+    <div class="elefante-body">
+      <p>A maioria dos empresários está rodeado de pessoas que concordam, motivam e aplaudem. <strong>O que falta é alguém disposto a dizer o que está errado — com clareza e sem medo.</strong></p>
+      <p>Isso não é crítica destrutiva. É o nível de conversa que os melhores pagam fortunas para ter com consultores particulares. Os Conselheiros torna isso acessível — e coletivo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── O QUE É ── -->
+<section id="oque">
+  <span class="section-number">01</span>
+  <div class="oque-inner">
+    <div class="oque-headline">
+      NÃO É EVENTO.<br>
+      <span class="italic-amber">É UMA SALA.</span>
+    </div>
+    <div class="oque-body">
+      <p>Os Conselheiros é um encontro presencial fechado, com formato Hot Seat: <strong>você senta, apresenta seu negócio ou desafio, e o grupo analisa ao vivo</strong> — sem roteiro, sem pauta bonita, sem resposta ensaiada.</p>
+      <p>Não tem palestrante. Não tem slide de metodologia. Não tem networking forçado. Tem conversa real, com pessoas que já erraram o suficiente para saber onde você pode estar errando agora.</p>
+      <p><strong>Cada participante tem seu tempo na cadeira.</strong> O resto do grupo observa, aprende, e reconhece seus próprios padrões nos outros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-dash"></div>
+      <div class="stat-title">O problema real<br><em>nomeado.</em></div>
+      <div class="stat-desc">Não o sintoma que você achava que era. O grupo entra fundo e identifica o que você não via de dentro.</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-dash"></div>
+      <div class="stat-title">Ângulos que você<br><em>não tinha.</em></div>
+      <div class="stat-desc">23 empresários com operações, erros e decisões diferentes das suas. Cada um enxerga um ponto cego diferente.</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-dash"></div>
+      <div class="stat-title">Clareza para<br><em>decidir agora.</em></div>
+      <div class="stat-desc">Não mais informação para processar depois. Você sai do Hot Seat sabendo o que fazer — não com tarefa de casa.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMO FUNCIONA ── -->
+<section id="steps">
+  <span class="section-number">02</span>
+  <div class="steps-inner">
+    <div class="section-label">Como funciona</div>
+
+    <div class="step">
+      <div class="step-number">01</div>
+      <div class="step-content">
+        <h3>Você se inscreve e conversa antes</h3>
+        <p>Não tem inscrição automática. Toda vaga passa por uma conversa rápida para garantir que o formato faz sentido para você — e que você faz sentido para o grupo.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">02</div>
+      <div class="step-content">
+        <h3>No dia: você senta na cadeira</h3>
+        <p>Cada participante tem seu tempo no Hot Seat. Você apresenta seu maior desafio atual — negócio, decisão, estratégia, trava. O grupo ouve e responde ao vivo, sem filtro e sem parabéns vazios.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">03</div>
+      <div class="step-content">
+        <h3>Você sai diferente de como entrou</h3>
+        <p>O problema que você trouxe vai ser analisado por quem não tem interesse em te poupar. Nenhum consultor faz isso. Nenhum curso faz isso. A decisão que estava travada, a premissa que você não via — isso não tem replay porque não é conteúdo. É uma conversa real sobre o seu negócio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PARA QUEM ── -->
+<section id="paraquem">
+  <span class="section-number">03</span>
+  <div class="paraquem-inner">
+    <div class="paraquem-left">
+      <h2>Para quem é isso?</h2>
+      <p>Não é para todo mundo. É para quem já passou da fase de precisar de motivação e quer feedback de verdade.</p>
+    </div>
+    <ul class="paraquem-list">
+      <li>Empresário com negócio rodando que sente que travou — e não sabe exatamente onde</li>
+      <li>Profissional liberal ou prestador de serviço que quer crescer mas está preso em operação</li>
+      <li>Gestor que tomou decisões importantes este ano e quer saber se está no caminho certo</li>
+      <li>Quem já leu os livros, fez os cursos e sabe que o que falta é uma conversa honesta com alguém de fora</li>
+      <li>Quem aguenta ouvir o que não quer — e age depois</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── NÃO É PRA VOCÊ ── -->
+<section id="naopra">
+  <span class="section-number">04</span>
+  <div class="naopra-inner">
+    <h2 class="naopra-headline">Não é para você se...</h2>
+    <div class="naopra-grid">
+      <div class="naopra-item">
+        <p><strong>Você quer validação, não avaliação.</strong> Se o objetivo é ouvir que está no caminho certo, o Hot Seat vai ser desconfortável do jeito errado.</p>
+      </div>
+      <div class="naopra-item">
+        <p><strong>Você ainda está montando a base.</strong> Se o negócio tem menos de 1 ano ou não tem faturamento real ainda, o nível da conversa pode não ser o mais adequado agora.</p>
+      </div>
+      <div class="naopra-item">
+        <p><strong>Você prefere conteúdo gravado.</strong> Aqui não tem replay, não tem PDF, não tem certificado. É experiência ao vivo ou nada.</p>
+      </div>
+      <div class="naopra-item">
+        <p><strong>Você quer networking massivo.</strong> O grupo é pequeno por design. Não é evento de cartão de visita — é sala de trabalho.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PREÇOS ── -->
+<section id="precos">
+  <div class="precos-inner">
+    <div class="precos-header">
+      <div class="section-label">Acesso</div>
+      <h2>Escolha seu lote.</h2>
+    </div>
+    <div class="precos-grid">
+
+      <!-- 1º Lote -->
+      <div class="preco-card featured">
+        <div class="preco-badge">ENTRA AGORA</div>
+        <div class="preco-lote">1º Lote · 8 vagas</div>
+        <div class="preco-valor">R$&nbsp;147</div>
+        <ul class="preco-features">
+          <li><strong>Presença no Hot Seat</strong> — dia inteiro</li>
+          <li><strong>Seu tempo na cadeira</strong> — análise ao vivo</li>
+          <li>Acesso a todas as sessões do grupo</li>
+          <li>Comunidade fechada pós-evento</li>
+          <li>Conversa de pré-seleção incluída</li>
+        </ul>
+        <a href="#" class="btn-card-primary">GARANTIR VAGA NO 1º LOTE →</a>
+      </div>
+
+      <!-- 2º Lote -->
+      <div class="preco-card">
+        <div class="preco-badge-neutral">2º Lote · 8 vagas</div>
+        <div class="preco-lote">Disponível após esgotamento do 1º</div>
+        <div class="preco-valor">R$&nbsp;187</div>
+        <div class="preco-de">&nbsp;</div>
+        <ul class="preco-features">
+          <li><strong>Presença no Hot Seat</strong> — dia inteiro</li>
+          <li><strong>Seu tempo na cadeira</strong> — análise ao vivo</li>
+          <li>Acesso a todas as sessões do grupo</li>
+          <li>Comunidade fechada pós-evento</li>
+          <li>Conversa de pré-seleção incluída</li>
+        </ul>
+        <a href="#" class="btn-card-secondary">ENTRAR NA LISTA →</a>
+      </div>
+
+      <!-- 3º Lote -->
+      <div class="preco-card">
+        <div class="preco-badge-neutral">3º Lote · 8 vagas</div>
+        <div class="preco-lote">Disponível após esgotamento do 2º</div>
+        <div class="preco-valor">R$&nbsp;227</div>
+        <div class="preco-de">&nbsp;</div>
+        <ul class="preco-features">
+          <li><strong>Presença no Hot Seat</strong> — dia inteiro</li>
+          <li><strong>Seu tempo na cadeira</strong> — análise ao vivo</li>
+          <li>Acesso a todas as sessões do grupo</li>
+          <li>Comunidade fechada pós-evento</li>
+          <li>Conversa de pré-seleção incluída</li>
+        </ul>
+        <span class="preco-esgotado">AGUARDANDO LOTE ANTERIOR</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── COUNTDOWN ── -->
+<section id="countdown">
+  <div class="countdown-label">1º Lote encerra em</div>
+  <div class="countdown-grid">
+    <div class="countdown-block">
+      <span class="countdown-num" id="cd-dias">--</span>
+      <div class="countdown-unit">Dias</div>
+    </div>
+    <div class="countdown-block">
+      <span class="countdown-num" id="cd-horas">--</span>
+      <div class="countdown-unit">Horas</div>
+    </div>
+    <div class="countdown-block">
+      <span class="countdown-num" id="cd-min">--</span>
+      <div class="countdown-unit">Min</div>
+    </div>
+    <div class="countdown-block">
+      <span class="countdown-num" id="cd-seg">--</span>
+      <div class="countdown-unit">Seg</div>
+    </div>
+  </div>
+  <p class="countdown-note">Após o prazo, o preço sobe automaticamente para o próximo lote.</p>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section id="cta-final">
+  <div class="cta-final-inner">
+    <div class="cta-final-text">
+      <h2>Pare de decidir no escuro.</h2>
+      <p>Uma conversa honesta pode mudar a direção do próximo ano inteiro. Garanta sua vaga no 1º lote antes que as 8 cadeiras sejam preenchidas.</p>
+    </div>
+    <a href="#precos" class="btn-final">QUERO UMA VAGA →</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="footer-logo">Os Conselheiros · Hot Seat · 3ª Edição</span>
+  <span class="footer-note">Evento fechado · Vagas sujeitas a disponibilidade</span>
+</footer>
+
+<script>
+  // ── COUNTDOWN ──
+  // Defina a data-alvo aqui (YYYY, MM-1, DD, HH, MM, SS)
+  const TARGET = new Date(2026, 6, 15, 23, 59, 0); // 15 de julho de 2026
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const now = new Date();
+    const diff = TARGET - now;
+
+    if (diff <= 0) {
+      document.getElementById('cd-dias').textContent = '00';
+      document.getElementById('cd-horas').textContent = '00';
+      document.getElementById('cd-min').textContent = '00';
+      document.getElementById('cd-seg').textContent = '00';
+      return;
+    }
+
+    const dias  = Math.floor(diff / 86400000);
+    const horas = Math.floor((diff % 86400000) / 3600000);
+    const min   = Math.floor((diff % 3600000) / 60000);
+    const seg   = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('cd-dias').textContent  = pad(dias);
+    document.getElementById('cd-horas').textContent = pad(horas);
+    document.getElementById('cd-min').textContent   = pad(min);
+    document.getElementById('cd-seg').textContent   = pad(seg);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // ── SMOOTH SCROLL OFFSET (nav fixa) ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const offset = 72;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
